@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="description" content="" />
+		<link rel="icon" href="%svelte.assets%/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		%svelte.head%
+		<script src="https://cdn.tailwindcss.com/"></script>
+		<script type="tailwind-config">
+			{
+				theme: {
+					extend: {
+						colors: {
+							'dark-blue-800': '#0A214C',
+							'hulk-800': '#3D42F5',
+						}
+					}
+				}
+			}
+		</script>
+		<style type="text/tailwindcss">
+		
+		</style>
+	</head>
+	<body>
+		<div id="svelte">%svelte.body%</div>
+	</body>
+</html>
