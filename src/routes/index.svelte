@@ -22,12 +22,14 @@
         tasks = tasks
     }
 
-    // TODO: allow user to delete tasks marked completed
-
-    function deleteTask(id) {
-        console.log(`id = ` + id);
-        tasks = [...tasks.slice(0, id), ...tasks.slice(id + 1)];
-        tasks = tasks;
+    function deleteTask(id, i) {
+        let task = tasks.find(task => task.id === id);
+        if (task) {
+            tasks = [...tasks.slice(0, i), ...tasks.slice(i + 1)];
+        }
+        else {
+            completedTasks = [...completedTasks.slice(0, i), ...completedTasks.slice(i + 1)];
+        }
     }
 
     function editTask(e, id, i) {
@@ -73,35 +75,38 @@
         </button>
     </form>
 
-    <div id="taskList" class="max-w-[500px]">
-        {#each tasks as task, i (task.id)}
-            <div animation:flip in:fade out:fly={{x: 100, delay: 200}} class="flex bg-gray-100 rounded-md p-2 pl-4 text-gray-700 mb-2 flex items-center">
-                <input on:click="{() => completeTask(task.id)}" type="checkbox" class="min-w-[1.5rem] h-6 w-6 mr-2 rounded-full appearance-none bg-gray-50 border-2 border-gray-300 checked:border-0 checked:bg-cyan-400">
+    <div id="taskList" class="grid grid-cols-2 gap-4">
+        <div class="mb-10">
+            <h3 in:fade out:fade class="text-3xl font-mono mb-4">Tasks</h3>
+            {#each tasks as task, i (task.id)}
+                <div animate:flip in:fade out:fade class="flex bg-gray-100 rounded-md p-2 pl-4 text-gray-700 mb-2 flex items-center">
+                    <input on:click="{() => completeTask(task.id)}" type="checkbox" class="min-w-[1.5rem] h-6 w-6 mr-2 rounded-full appearance-none bg-gray-50 border-2 border-gray-300 checked:border-0 checked:bg-cyan-400">
 
-                <input on:input="{(e) => editTask(e, task.id, i)}" value="{task.title}" class="bg-gray-100 w-full p-2 focus:outline-none">
- 
-                <button on:click="{() => deleteTask(i)}" class="text-gray-700 p-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>  
-        {/each}
-        {#if completedTasks.length > 0}
-        <h3 class="text-3xl font-mono mt-10 mb-4">Completed</h3>
-        {/if}
-        {#each completedTasks as task, i (task.id)}
-            <div animation:flip in:fade out:fly={{x: 100, delay: 200}} class="flex bg-gray-100 rounded-md p-2 pl-4 text-gray-700 mb-2 flex items-center">
-                <input on:click="{() => incompleteTask(task.id)}" type="checkbox" class="min-w-[1.5rem] h-6 w-6 mr-2 rounded-full appearance-none bg-gray-50 border-2 border-gray-300 checked:border-0 checked:bg-cyan-400" checked>
+                    <input on:input="{(e) => editTask(e, task.id, i)}" value="{task.title}" class="bg-gray-100 w-full p-2 focus:outline-none">
 
-                <input on:input="{(e) => editTask(e, task.id, i)}" value="{task.title}" class="bg-gray-100 w-full p-2 line-through focus:outline-none">
- 
-                <button on:click="{() => deleteTask(i)}" class="text-gray-700 p-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>  
-        {/each}
+                    <button on:click="{() => deleteTask(task.id, i)}" class="text-gray-700 p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>  
+            {/each}
+        </div>
+        <div class="mb-10">
+            <h3 in:fade out:fade class="text-3xl font-mono mb-4">Completed</h3>
+            {#each completedTasks as task, i (task.id)}
+                <div animate:flip in:fade out:fade class="flex bg-gray-100 rounded-md p-2 pl-4 text-gray-700 mb-2 flex items-center">
+                    <input on:click="{() => incompleteTask(task.id)}" type="checkbox" class="min-w-[1.5rem] h-6 w-6 mr-2 rounded-full appearance-none bg-gray-50 border-2 border-gray-300 checked:border-0 checked:bg-cyan-400" checked>
+
+                    <input on:input="{(e) => editTask(e, task.id, i)}" value="{task.title}" class="bg-gray-100 w-full p-2 line-through focus:outline-none">
+    
+                    <button on:click="{() => deleteTask(task.id, i)}" class="text-gray-700 p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>  
+            {/each}
+        </div>
     </div>
 </div>
