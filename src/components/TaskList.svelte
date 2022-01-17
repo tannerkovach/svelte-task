@@ -2,16 +2,9 @@
     import { fade, fly, slide } from 'svelte/transition';
     import { flip } from 'svelte/animate';
     import { createEventDispatcher } from 'svelte';
-    import { tasks } from './TaskStore.js';
-    
+    import { tasks, completedTasks } from './TaskStore.js';
 
     const dispatch = createEventDispatcher();
-
-    function markComplete(task) {
-        dispatch('markComplete', {
-            task: task
-        });
-    }
 
     function deleteTask(task, i) {
         dispatch('deleteTask', {
@@ -19,6 +12,22 @@
             i: i
         });
     }
+
+	function markComplete(clickEvent) {
+		let task = $tasks.find((task) => task.id == clickEvent);
+	
+        tasks.update((tasks) => {
+            return [...tasks, task]
+        });
+        completedTasks.update((tasks) => {
+            return [...tasks, task]
+        });
+
+        $tasks = $tasks.filter((task) => task.id !== clickEvent);
+
+		task.completed = !task.completed;
+		$completedTasks = $completedTasks;
+	}
 </script>
 
 <ul class="mb-10">
