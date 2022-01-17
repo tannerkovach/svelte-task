@@ -4,9 +4,9 @@
 	import TaskList from '../components/TaskList.svelte';
 	import CompletedTaskList from '../components/CompletedTaskList.svelte';
 	import TaskInput from '../components/TaskInput.svelte';
-
-	let tasks = [];
-	let completedTasks = [];
+    import { tasks,completedTasks } from '../components/TaskStore.js';
+	// let tasks = [];
+	// let completedTasks = [];
 	let taskEntered;
    
 
@@ -20,7 +20,14 @@
 			completed: false
 		};
 		taskTitle.length ? (taskEntered = true) : (taskEntered = false);
-		taskTitle.length > 0 ? (tasks = [...tasks, task]) : alert('Please enter a task');
+        tasks.update((tasks) => {
+            
+            return [...tasks, task]
+            
+        });
+        console.log($tasks)
+
+		// taskTitle.length > 0 ? (tasks = [...tasks, task]) : alert('Please enter a task');
 		taskForm.reset();
 	}
 
@@ -65,11 +72,10 @@
 
 	{#if tasks.length !== 0 || completedTasks.length !== 0}
 		<div transition:fade id="taskList" class="grid grid-cols-1 sm:grid-cols-2 gap-10">
-			<TaskList bind:tasks on:markComplete={markComplete} on:deleteTask={deleteTask} />
+			<TaskList on:markComplete={markComplete} on:deleteTask={deleteTask} />
 
-			{#if completedTasks.length !== 0}
+			{#if $completedTasks.length !== 0}
 				<CompletedTaskList
-					bind:completedTasks
 					on:markIncomplete={markIncomplete}
 					on:deleteTask={deleteTask}
 				/>

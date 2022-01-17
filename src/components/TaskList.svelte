@@ -2,7 +2,8 @@
     import { fade, fly, slide } from 'svelte/transition';
     import { flip } from 'svelte/animate';
     import { createEventDispatcher } from 'svelte';
-    export let tasks;
+    import { tasks } from './TaskStore.js';
+    
 
     const dispatch = createEventDispatcher();
 
@@ -22,7 +23,7 @@
 
 <ul class="mb-10">
     <h3 in:fade out:fade class="text-3xl font-mono mb-4">Tasks</h3>
-    {#each tasks as task, i (task.id)}
+    {#each $tasks as task, i (task.id)}
         <li animate:flip in:fade out:fade class="flex bg-gray-100 rounded-md p-2 pl-4 text-gray-700 mb-2 flex items-center">
             <input on:click="{markComplete(task.id)}" type="checkbox" class="min-w-[1.5rem] h-6 w-6 mr-2 rounded-full appearance-none bg-gray-50 border-2 border-gray-300 checked:border-0 checked:bg-cyan-400">
 
